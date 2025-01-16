@@ -50,11 +50,24 @@
                                     <td>{{ $barang->harga }}</td>
                                     <td>{{ $barang->stok }}</td>
                                     <td>
-                                        <a href="{{ route('edit-barang', $barang->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                        <button
+                                            class="px-2 text-primary border-0 bg-transparent"
+                                            title="Edit"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editBarangModal"
+                                            data-id="{{ $barang->id }}"
+                                            data-kode="{{ $barang->kode_barang }}"
+                                            data-nama="{{ $barang->nama_barang }}"
+                                            data-harga="{{ $barang->harga }}"
+                                            data-stok="{{ $barang->stok }}">
+                                            <i class="ri-pencil-line font-size-18"></i>
+                                        </button>
                                         <form action="{{ route('delete-barang', $barang->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                            <button type="submit" class="px-2 text-danger border-0 bg-transparent" title="Delete">
+                                                <i class="ri-delete-bin-line font-size-18"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -77,7 +90,7 @@
                     <!-- end modalheader -->
                     <div class="modal-body p-4">
                         <form action="{{ url('/data-barang') }}" method="POST">
-                            @csrf <!-- CSRF Token untuk menghindari serangan CSRF -->
+                            @csrf
                             <div class="mb-3">
                                 <label for="kode_barang" class="form-label">Kode Barang</label>
                                 <input type="text" class="form-control" id="kode_barang" name="kode_barang" placeholder="Masukkan Kode Barang" required>
@@ -99,6 +112,48 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light w-sm" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary w-sm">Add</button>
+                    </div>
+                    </form>
+                    <!-- end modalfooter -->
+                </div><!-- end content -->
+            </div>
+        </div>
+        <!-- end modal -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="editBarangModal" tabindex="-1" aria-labelledby="editBarangModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editBarangModalLabel">Edit Data Barang</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <!-- end modalheader -->
+                    <div class="modal-body p-4">
+                        <form action="{{ isset($barang) ? route('data-barang.update', ['id' => $barang->id]) : '' }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="kode_barang" class="form-label">Kode Barang</label>
+                                <input type="text" class="form-control" id="edit_kode_barang" name="kode_barang">
+                            </div>
+                            <div class="mb-3">
+                                <label for="nama_barang" class="form-label">Nama Barang</label>
+                                <input type="text" class="form-control" id="edit_nama_barang" name="nama_barang">
+                            </div>
+                            <div class="mb-3">
+                                <label for="harga_barang" class="form-label">Harga Barang</label>
+                                <input type="number" class="form-control" id="edit_harga_barang" name="harga_barang">
+                            </div>
+                            <div class="mb-3">
+                                <label for="stok_barang" class="form-label">Stok Barang</label>
+                                <input type="number" class="form-control" id="edit_stok_barang" name="stok_barang">
+                            </div>
+                    </div>
+                    <!-- end modalbody -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light w-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary w-sm">Update</button>
                     </div>
                     </form>
                     <!-- end modalfooter -->
@@ -132,4 +187,31 @@
         <script src="{{ URL::asset('build/js/pages/datatables.init.js') }}"></script>
         <!-- App js -->
         <script src="{{ URL::asset('build/js/app.js') }}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const editBarangModal = document.getElementById('editBarangModal');
+
+                editBarangModal.addEventListener('show.bs.modal', (event) => {
+                    // Tombol yang diklik
+                    const button = event.relatedTarget;
+
+                    // Ambil data dari atribut data-*
+                    const id = button.getAttribute('data-id');
+                    const kode = button.getAttribute('data-kode');
+                    const nama = button.getAttribute('data-nama');
+                    const harga = button.getAttribute('data-harga');
+                    const stok = button.getAttribute('data-stok');
+
+                    // Isi field modal dengan data yang sesuai
+                    document.getElementById('edit_kode_barang').value = kode;
+                    document.getElementById('edit_nama_barang').value = nama;
+                    document.getElementById('edit_harga_barang').value = harga;
+                    document.getElementById('edit_stok_barang').value = stok;
+
+                    // Tambahkan action URL untuk form jika perlu
+                    const form = editBarangModal.querySelector('editBarangForm');
+                    form.action = `/data-barang/update/${id}`;
+                });
+            });
+        </script>
     @endsection

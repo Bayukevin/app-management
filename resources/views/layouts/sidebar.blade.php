@@ -134,7 +134,7 @@
                 <li class="menu-title">Management</li>
 
                 <li>
-                    <a href="pages.barang-masuk" class="waves-effect">
+                    <a href="/barang-masuk" class="waves-effect">
                         <i class="uim uim-airplay"></i><span class="float-end">></span>
                         <span>Barang Masuk</span>
                     </a>
@@ -147,7 +147,7 @@
                     </a>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="uim uim-sign-in-alt"></i>
                         <span>Authentication</span>
@@ -309,7 +309,7 @@
                             </ul>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
             </ul>
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DataBarang;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 class DataBarangController extends Controller
 {
@@ -24,16 +26,42 @@ class DataBarangController extends Controller
             'stok_barang' => 'required|integer|min:0',
         ]);
 
+        $user = Auth::user();
+
         DataBarang::create([
             'kode_barang' => $request->kode_barang,
             'nama_barang' => $request->nama_barang,
             'harga' => $request->harga_barang,
             'stok' => $request->stok_barang,
-            'created_by' => 'Admin',
-            'updated_by' => 'Admin',
+            'created_by' => $user->id,
+            'updated_by' => null,
         ]);
 
         return redirect('data-barang')->with('success', 'Data barang berhasil disimpan.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'kode_barang' => 'required|string|max:255',
+            'nama_barang' => 'required|string|max:255',
+            'harga_barang' => 'required|numeric|min:0',
+            'stok_barang' => 'required|integer|min:0',
+        ]);
+
+        $barang = DataBarang::findOrFail($id);
+        $user = Auth::user();
+
+        $barang->update([
+            'kode_barang' => $request->kode_barang,
+            'nama_barang' => $request->nama_barang,
+            'harga' => $request->harga_barang,
+            'stok' => $request->stok_barang,
+            'updated_by' =>  $user->id,
+        ]);
+
+        return redirect()->route('data-barang')->with('success', 'Data barang berhasil diperbarui.');
     }
 
     public function destroy($id)

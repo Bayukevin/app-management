@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DataBarangController;
+use App\Http\Controllers\BarangMasukController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,12 +19,21 @@ use App\Http\Controllers\DataBarangController;
 
 Auth::routes();
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/data-barang', [DataBarangController::class, 'index'])->name('data-barang');
+    Route::post('/data-barang', [DataBarangController::class, 'store']);
+    Route::post('/data-barang/update/{id}', [DataBarangController::class, 'update'])->name('data-barang.update');
+    Route::delete('/data-barang/delete/{id}', [DataBarangController::class, 'destroy'])->name('delete-barang');
+
+    Route::get('/barang-masuk', [BarangMasukController::class, 'index'])->name('barang-masuk.index');
+    Route::post('/barang-masuk', [BarangMasukController::class, 'store'])->name('barang-masuk.store');
+    Route::put('/barang-masuk/{id}', [BarangMasukController::class, 'update'])->name('barang-masuk.update');
+    Route::delete('/barang-masuk/{id}', [BarangMasukController::class, 'destroy'])->name('barang-masuk.destroy');
+});
+
 Route::get('/users', [UserController::class, 'index']);
 
-Route::get('/data-barang', [DataBarangController::class, 'index'])->name('data-barang');
-Route::post('/data-barang', [DataBarangController::class, 'store']);
-Route::get('/data-barang/edit/{id}', [DataBarangController::class, 'edit'])->name('edit-barang');
-Route::delete('/data-barang/delete/{id}', [DataBarangController::class, 'destroy'])->name('delete-barang');
+
 
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'root']);

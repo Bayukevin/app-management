@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 
 class DataBarang extends Model
 {
@@ -18,4 +19,13 @@ class DataBarang extends Model
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
+    protected static function booted()
+    {
+        static::deleting(function ($barang) {
+            if (Auth::check()) {
+                $barang->deleted_by = Auth::id();
+                $barang->save();
+            }
+        });
+    }
 }
