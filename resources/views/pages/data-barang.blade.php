@@ -134,8 +134,9 @@
                     </div>
                     <!-- end modalheader -->
                     <div class="modal-body p-4">
-                        <form action="{{ isset($barang) ? route('data-barang.update', ['id' => $barang->id]) : '' }}" method="POST">
+                        <form id="editBarangForm" method="POST">
                             @csrf
+                            @method('PUT')
                             <div class="mb-3">
                                 <label for="kode_barang" class="form-label">Kode Barang</label>
                                 <input type="text" class="form-control" id="edit_kode_barang" name="kode_barang">
@@ -202,30 +203,30 @@
         <script src="{{ URL::asset('build/js/app.js') }}"></script>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                const editBarangModal = document.getElementById('editBarangModal');
+    const editBarangModal = document.getElementById('editBarangModal');
 
-                editBarangModal.addEventListener('show.bs.modal', (event) => {
-                    // Tombol yang diklik
-                    const button = event.relatedTarget;
+    editBarangModal.addEventListener('show.bs.modal', (event) => {
+        const button = event.relatedTarget;
 
-                    // Ambil data dari atribut data-*
-                    const id = button.getAttribute('data-id');
-                    const kode = button.getAttribute('data-kode');
-                    const nama = button.getAttribute('data-nama');
-                    const harga = button.getAttribute('data-harga');
-                    const stok = button.getAttribute('data-stok');
+        // Ambil data dari atribut data-*
+        const id = button.getAttribute('data-id');
+        const kode = button.getAttribute('data-kode');
+        const nama = button.getAttribute('data-nama');
+        const harga = button.getAttribute('data-harga');
+        const stok = button.getAttribute('data-stok');
 
-                    // Isi field modal dengan data yang sesuai
-                    document.getElementById('edit_kode_barang').value = kode;
-                    document.getElementById('edit_nama_barang').value = nama;
-                    document.getElementById('edit_harga_barang').value = harga;
-                    document.getElementById('edit_stok_barang').value = stok;
+        // Isi field modal dengan data yang sesuai
+        document.getElementById('edit_kode_barang').value = kode;
+        document.getElementById('edit_nama_barang').value = nama;
+        document.getElementById('edit_harga_barang').value = harga;
+        document.getElementById('edit_stok_barang').value = stok;
 
-                    // Tambahkan action URL untuk form jika perlu
-                    const form = editBarangModal.querySelector('editBarangForm');
-                    form.action = `/data-barang/update/${id}`;
-                });
-            });
+        // Atur action URL pada form untuk update
+        const form = document.getElementById('editBarangForm');
+        form.action = `/data-barang/update/${id}`;
+    });
+});
+
 
             function confirmDelete(id) {
                 Swal.fire({
