@@ -149,8 +149,8 @@
                                     <p class="mb-0">©
                                         <script>
                                             document.write(new Date().getFullYear())
-                                        </script> Tocly. Crafted with <i
-                                            class="mdi mdi-heart text-danger"></i> by Themesdesign
+                                        </script> Develop. Crafted with <i
+                                            class="mdi mdi-heart text-danger"></i> by Incinerator
                                     </p>
                                 </div>
                             </div>

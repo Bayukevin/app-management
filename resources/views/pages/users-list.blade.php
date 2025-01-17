@@ -60,7 +60,7 @@
                                                 </div>
                                             </th>
                                             <td>
-                                                <img src="{{ URL::asset('build/images/users/avatar-2.jpg') }}" alt=""
+                                                <img src="{{ URL::asset('build/images/users/default.jpg') }}" alt=""
                                                     class="avatar-xs rounded-circle me-2">
                                                 <a href="#" class="text-body">{{ $user->name }}</a>
                                             </td>

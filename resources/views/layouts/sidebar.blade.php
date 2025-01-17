@@ -85,12 +85,12 @@
             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="d-flex align-items-center">
                 <div class="flex-shrink-0">
-                    <img src="{{ URL::asset('build/images/users/avatar-2.jpg') }}"
+                    <img src="{{ URL::asset('build/images/users/default.jpg') }}"
                         class="img-fluid header-profile-user rounded-circle" alt="">
                 </div>
 
                 <div class="flex-grow-1 ms-2 text-start">
-                    <span class="ms-1 fw-medium user-name-text">Steven Deese</span>
+                    <span class="ms-1 fw-medium user-name-text">{{ Auth::user()->name ?? 'Guest' }}</span>
                 </div>
 
                 <div class="flex-shrink-0 text-end">
@@ -100,9 +100,6 @@
         </button>
         <div class="dropdown-menu dropdown-menu-end">
             <!-- item-->
-            <a class="dropdown-item" href="pages-profile"><i
-                    class="mdi mdi-account-circle text-muted font-size-16 align-middle me-1"></i> <span
-                    class="align-middle">Profile</span></a>
             <a class="dropdown-item" href="javascript:void();"
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
                     class="mdi mdi-lock text-muted font-size-16 align-middle me-1"></i> <span

@@ -12,13 +12,13 @@
                         <div class="w-100">
                             <div class="d-flex flex-column h-100 py-0 py-xl-3">
                                 <div class="text-center mb-4">
-                                    <a href="index" class="">
+                                    {{-- <a href="index" class="">
                                         <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt=""
                                             height="22" class="auth-logo logo-dark mx-auto">
                                         <img src="{{ URL::asset('build/images/logo-light.png') }}" alt=""
                                             height="22" class="auth-logo logo-light mx-auto">
-                                    </a>
-                                    <p class="text-muted mt-2">User Experience & Interface Design Strategy Saas Solution</p>
+                                    </a> --}}
+                                    {{-- <p class="text-muted mt-2">User Experience & Interface Design Strategy Saas Solution</p> --}}
                                 </div>
 
                                 <div class="card my-auto overflow-hidden">
@@ -34,7 +34,7 @@
                                                 <div>
                                                     <div class="text-center mt-1">
                                                         <h4 class="font-size-18">Welcome Back !</h4>
-                                                        <p class="text-muted">Sign in to continue to Tocly.</p>
+                                                        <p class="text-muted">Sign in to continue to Incinerator.</p>
                                                     </div>
 
                                                     <form method="POST" action="{{ route('login') }}" class="auth-input">
@@ -81,22 +81,6 @@
                                                             <button class="btn btn-primary w-100" type="submit">Sign
                                                                 In</button>
                                                         </div>
-
-                                                        <div class="mt-4 pt-2 text-center">
-                                                            <div class="signin-other-title">
-                                                                <h5 class="font-size-14 mb-4 title">Sign In with</h5>
-                                                            </div>
-                                                            <div class="pt-2 hstack gap-2 justify-content-center">
-                                                                <button type="button" class="btn btn-primary btn-sm"><i
-                                                                        class="ri-facebook-fill font-size-16"></i></button>
-                                                                <button type="button" class="btn btn-danger btn-sm"><i
-                                                                        class="ri-google-fill font-size-16"></i></button>
-                                                                <button type="button" class="btn btn-dark btn-sm"><i
-                                                                        class="ri-github-fill font-size-16"></i></button>
-                                                                <button type="button" class="btn btn-info btn-sm"><i
-                                                                        class="ri-twitter-fill font-size-16"></i></button>
-                                                            </div>
-                                                        </div>
                                                     </form>
                                                 </div>
 
@@ -115,8 +99,8 @@
                                     <p class="mb-0">©
                                         <script>
                                             document.write(new Date().getFullYear())
-                                        </script> Tocly. Crafted with <i
-                                            class="mdi mdi-heart text-danger"></i> by Themesdesign
+                                        </script> Develop. Crafted with <i
+                                            class="mdi mdi-heart text-danger"></i> by Incinerator
                                     </p>
                                 </div>
                             </div>

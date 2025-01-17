@@ -3,7 +3,7 @@
     Recover Password
 @endsection
 @section('content')
-    
+
     <div class="auth-maintenance d-flex align-items-center min-vh-100">
         <div class="bg-overlay bg-light"></div>
         <div class="container">
@@ -104,8 +104,8 @@
                                     <p class="mb-0">©
                                         <script>
                                             document.write(new Date().getFullYear())
-                                        </script> Tocly. Crafted with <i
-                                            class="mdi mdi-heart text-danger"></i> by Themesdesign
+                                        </script> Develop. Crafted with <i
+                                            class="mdi mdi-heart text-danger"></i> by Incinerator
                                     </p>
                                 </div>
                             </div>
