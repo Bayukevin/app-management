@@ -42,7 +42,6 @@ class DataBarangController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validasi input
         $validated = $request->validate([
             'kode_barang' => 'required|string|max:255',
             'nama_barang' => 'required|string|max:255',

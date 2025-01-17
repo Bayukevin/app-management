@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DataBarangController;
 use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\BarangKeluarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/barang-masuk', [BarangMasukController::class, 'store'])->name('barang-masuk.store');
     Route::put('/barang-masuk/{id}', [BarangMasukController::class, 'update'])->name('barang-masuk.update');
     Route::delete('/barang-masuk/{id}', [BarangMasukController::class, 'destroy'])->name('barang-masuk.destroy');
+
+    Route::resource('barang-keluar', BarangKeluarController::class);
+    Route::put('/barang-keluar/{id}', [BarangKeluarController::class, 'update'])->name('barang-keluar.update');
+    Route::delete('/barang-keluar/{id}', [BarangKeluarController::class, 'destroy'])->name('barang-keluar.destroy');
 });
 
 Route::get('/users', [UserController::class, 'index']);

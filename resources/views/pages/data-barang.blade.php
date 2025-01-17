@@ -10,6 +10,7 @@
 
     <!-- Responsive datatable examples -->
     <link href="{{ URL::asset('build/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 @section('page-title')
     Data Stok Barang
@@ -35,6 +36,7 @@
                             style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
+                                    <th>No</th>
                                     <th>Kode Barang</th>
                                     <th>Nama Barang</th>
                                     <th>Harga Barang</th>
@@ -45,9 +47,10 @@
                             <tbody>
                                 @foreach($data_barang as $barang)
                                 <tr>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $barang->kode_barang }}</td>
                                     <td>{{ $barang->nama_barang }}</td>
-                                    <td>{{ $barang->harga }}</td>
+                                    <td>Rp {{ number_format($barang->harga, 0, ',', '.') }}</td>
                                     <td>{{ $barang->stok }}</td>
                                     <td>
                                         <button
@@ -62,10 +65,10 @@
                                             data-stok="{{ $barang->stok }}">
                                             <i class="ri-pencil-line font-size-18"></i>
                                         </button>
-                                        <form action="{{ route('delete-barang', $barang->id) }}" method="POST" style="display:inline;">
+                                        <form action="{{ route('delete-barang', $barang->id) }}" method="POST" style="display:inline;" id="delete-form-{{ $barang->id }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="px-2 text-danger border-0 bg-transparent" title="Delete">
+                                            <button type="button" class="px-2 text-danger border-0 bg-transparent" title="Delete" onclick="confirmDelete({{ $barang->id }})">
                                                 <i class="ri-delete-bin-line font-size-18"></i>
                                             </button>
                                         </form>
@@ -113,7 +116,7 @@
                         <button type="button" class="btn btn-light w-sm" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary w-sm">Add</button>
                     </div>
-                    </form>
+                        </form>
                     <!-- end modalfooter -->
                 </div><!-- end content -->
             </div>
@@ -161,6 +164,16 @@
             </div>
         </div>
         <!-- end modal -->
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    title: 'Success!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        @endif
     @endsection
     @section('scripts')
         <!-- Required datatable js -->
@@ -213,5 +226,21 @@
                     form.action = `/data-barang/update/${id}`;
                 });
             });
+
+            function confirmDelete(id) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('delete-form-' + id).submit();
+                    }
+                });
+            }
         </script>
     @endsection

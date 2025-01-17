@@ -10,6 +10,7 @@
 
     <!-- Responsive datatable examples -->
     <link href="{{ URL::asset('build/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 @section('page-title')
     Barang Masuk
@@ -35,6 +36,8 @@
                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                             <tr>
+                                <th>No</th>
+                                <th>Kode Barang</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah Barang Masuk</th>
                                 <th>Tanggal Barang Masuk</th>
@@ -44,30 +47,35 @@
                         <tbody>
                             @forelse($barangMasuk as $item)
                                 <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->dataBarang->kode_barang }}</td>
                                     <td>{{ $item->dataBarang->nama_barang }}</td>
                                     <td>{{ $item->jumlah }}</td>
                                     <td>{{ $item->tanggal }}</td>
                                     <td>
                                         <button
-                                            class="btn btn-sm btn-primary"
+                                            class="px-2 text-primary border-0 bg-transparent"
+                                            title="Edit"
                                             data-bs-toggle="modal"
                                             data-bs-target="#editBarangModal"
                                             data-id="{{ $item->id }}"
                                             data-barang-id="{{ $item->data_barang_id }}"
                                             data-jumlah="{{ $item->jumlah }}"
                                             data-tanggal="{{ $item->tanggal }}">
-                                            Edit
+                                            <i class="ri-pencil-line font-size-18"></i>
                                         </button>
-                                        <form action="{{ route('barang-masuk.destroy', $item->id) }}" method="POST" style="display:inline;">
+                                        <form action="{{ route('barang-masuk.destroy', $item->id) }}" method="POST" style="display:inline;" id="delete-form-{{ $item->id }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                            <button type="button" class="px-2 text-danger border-0 bg-transparent" title="Delete" onclick="confirmDelete({{ $item->id }})">
+                                                <i class="ri-delete-bin-line font-size-18"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center">Tidak ada data barang masuk.</td>
+                                    <td colspan="6" class="text-center">Tidak ada data barang masuk.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -134,7 +142,7 @@ aria-hidden="true">
         <div class="modal-body p-4">
             <form id="editBarangForm" method="POST">
                 @csrf
-                @method('PUT') <!-- Method untuk update -->
+                @method('PUT')
 
                 <input type="hidden" id="edit_id" name="id"> <!-- Hidden ID -->
 
@@ -168,7 +176,16 @@ aria-hidden="true">
 </div>
 </div>
 <!-- end modal -->
-
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
     @endsection
     @section('scripts')
         <!-- Required datatable js -->
@@ -219,5 +236,21 @@ aria-hidden="true">
                     form.action = `/barang-masuk/${id}`;
                 });
             });
+
+            function confirmDelete(id) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('delete-form-' + id).submit();
+                    }
+                });
+            }
         </script>
     @endsection

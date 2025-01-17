@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BarangMasuk;
+use App\Models\BarangKeluar;
 use App\Models\DataBarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class BarangMasukController extends Controller
+class BarangKeluarController extends Controller
 {
-
     public function index()
     {
         $dataBarang = DataBarang::all();
-        $barangMasuk = BarangMasuk::with('dataBarang')->get();
-
-        return view('pages.barang-masuk', compact('dataBarang', 'barangMasuk'));
+        $barangKeluar = BarangKeluar::with('dataBarang')->get();
+        return view('pages.barang-keluar', compact('dataBarang','barangKeluar'));
     }
 
     public function update(Request $request, $id)
@@ -26,16 +24,18 @@ class BarangMasukController extends Controller
             'tanggal' => 'required|date',
         ]);
 
-        $barangMasuk = BarangMasuk::findOrFail($id);
-        $barangMasuk->update([
+        $barangKeluar = BarangKeluar::findOrFail($id);
+
+        $barangKeluar->update([
             'data_barang_id' => $request->data_barang_id,
             'jumlah' => $request->jumlah,
             'tanggal' => $request->tanggal,
             'updated_by' => Auth::id(),
         ]);
 
-        return redirect()->route('barang-masuk.index')->with('success', 'Data barang masuk berhasil diperbarui.');
+        return redirect()->route('barang-keluar.index')->with('success', 'Data barang keluar berhasil diperbarui.');
     }
+
 
     public function store(Request $request)
     {
@@ -45,7 +45,7 @@ class BarangMasukController extends Controller
             'tanggal' => 'required|date',
         ]);
 
-        $barangMasuk = BarangMasuk::create([
+        $barangKeluar = BarangKeluar::create([
             'data_barang_id' => $request->data_barang_id,
             'jumlah' => $request->jumlah,
             'tanggal' => $request->tanggal,
@@ -54,26 +54,33 @@ class BarangMasukController extends Controller
         ]);
 
         $barang = DataBarang::findOrFail($request->data_barang_id);
-        $barang->stok += $request->jumlah;
-        $barang->updated_by = Auth::id();
-        $barang->save();
+        if ($barang->stok >= $request->jumlah) {
+            $barang->stok -= $request->jumlah;
+            $barang->updated_by = Auth::id();
+            $barang->save();
+        } else {
+            return redirect()->back()->with('error', 'Stok barang tidak cukup.');
+        }
 
-        return redirect()->route('barang-masuk.index')->with('success', 'Barang masuk berhasil ditambahkan.');
+        return redirect()->route('barang-keluar.index')->with('success', 'Barang keluar berhasil ditambahkan.');
     }
 
     public function destroy($id)
     {
-        $barangMasuk = BarangMasuk::findOrFail($id);
+        $barangKeluar = BarangKeluar::findOrFail($id);
 
-        $barang = $barangMasuk->dataBarang;
+        $barang = $barangKeluar->dataBarang;
 
-        $barang->stok -= $barangMasuk->jumlah;
+        $barang->stok += $barangKeluar->jumlah;
+
         $barang->updated_by = Auth::id();
+
         $barang->save();
 
-        $barangMasuk->delete();
+        $barangKeluar->delete();
 
-        return redirect()->route('barang-masuk.index')->with('success', 'Data barang masuk berhasil dihapus.');
+        return redirect()->route('barang-keluar.index')->with('success', 'Data barang keluar berhasil dihapus dan stok barang dikembalikan.');
     }
+
 
 }
